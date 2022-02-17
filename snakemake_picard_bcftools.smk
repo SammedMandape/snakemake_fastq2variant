@@ -61,7 +61,7 @@ rule bwa_mem_map:
 			-M {config[refs][Reference]} \
 			{read1} {read2} | \
 			samtools view -bh - | \
-			samtools sort -m 8G - > {output} && samtools index {output} 2> {log}
+			samtools sort -@ 2 -m 50G - > {output} && samtools index {output} 2> {log}
 			"""
 		)
 

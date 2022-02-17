@@ -7,7 +7,7 @@ refs:
   Reference: "/home/snm0205/densesnp/snakehiss/GRCh38_full_analysis_set_plus_decoy_hla.fa"
 
 bwamemParams:
-  bwaThreads: 64
+  bwaThreads: 10
 
 bcftoolsParams:
   bcfThreads: 4
