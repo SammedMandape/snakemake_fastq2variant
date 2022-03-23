@@ -30,7 +30,7 @@ print(SAMPLES_UNIQ_L, "SAMPLES_UNIQ_L", LANE, "LANE")
 
 rule all:
 	input:
-		expand("{dirname}/bcftools_norm/{samplename}.la.md.bqsr.bcftools.normed.bcf", samplename=SAMPLES_UNIQ_L,dirname=DIR_UNIQ_L)
+		expand("{dirname}/deepvariant_vcf/{samplename}.la.md.output.vcf.gz", samplename=SAMPLES_UNIQ_L,dirname=DIR_UNIQ_L)
 
 # TODO: fastqc report, summary stats
 
@@ -102,51 +102,22 @@ rule markdup_bams:
 		 "VERBOSITY=ERROR QUIET=true I={input} O={output.bam} M={output.metrics} "
 		"TMP_DIR=/mnt/scratch0/snm0205/samtmp"
 
-rule bqsr_baserecalib:
-	input:
-		bam="{dirname}/markdup_bams/{samplename}.la.md.bam",
-		metrics="{dirname}/markdup_bams/{samplename}.la.md.metrics"
-	output:
-		"{dirname}/happy_bqsr_bams/{samplename}.recal.csv"
-	shell:
-		"gatk --java-options {config[bqsrParam][javaoptions]} BaseRecalibrator -R {config[refs][Reference]} -O {output} "
-		"--known-sites {config[bqsrParam][dbSNP]} "
-		"--known-sites {config[bqsrParam][indelFile]} "
-		"--known-sites {config[bqsrParam][thousandGenomesSite]} "
-		"-I {input.bam}"
-
-rule bqsr_apply:
-	input:
-		bam="{dirname}/markdup_bams/{samplename}.la.md.bam",
-		recal_file="{dirname}/happy_bqsr_bams/{samplename}.recal.csv"
-	output:
-		"{dirname}/happy_bqsr_bams/{samplename}.la.md.bqsr.bam"
-	shell:
-		"gatk ApplyBQSR --QUIET true --create-output-bam-index true -R {config[refs][Reference]} "
-		"--bqsr-recal-file {input.recal_file} -I {input.bam} "
-		"-O {output} "
-
-
-rule bcftools_call:
-	input:
-		"{dirname}/happy_bqsr_bams/{samplename}.la.md.bqsr.bam"
-	output:
-		"{dirname}/bcfs/{samplename}.la.md.bqsr.bcftools.bcf"
-	shell:
-		"bcftools mpileup -d 1023 -q 9 "
-		"-a 'AD,ADF,ADR,DP,SP,INFO/AD,INFO/ADF,INFO/ADR' "
-		"-Ou -f {config[refs][Reference]} "
-		"{input} "
-		 "| bcftools call --threads {config[bcftoolsParams][bcfThreads]} "
-		 "-g 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30 -f GP -m -Ob -o {output} "
-		"&& bcftools index {output}"
-
-rule bcftools_norm:
-	input:
-		"{dirname}/bcfs/{samplename}.la.md.bqsr.bcftools.bcf"
-	output:
-		"{dirname}/bcftools_norm/{samplename}.la.md.bqsr.bcftools.normed.bcf"
-	shell:
-		"bcftools norm -m -snps -c x -f {config[refs][Reference]} {input} "
-		 "-Ob -o {output} && "
-		 "bcftools index {output}"
+# TODO: take deepvariant bin version from config.yaml file.
+rule deepvariant:
+    input:
+        "{dirname}/markdup_bams/{samplename}.la.md.bam"
+    output:
+        vcf="{dirname}/deepvariant_vcf/{samplename}.la.md.output.vcf.gz",
+        gvcf="{dirname}/deepvariant_vcf/{samplename}.la.md.output.g.vcf.gz"
+    run:
+        shell(
+            """
+            singularity run --nv -B /usr/lib/locale,/mnt/ docker://google/deepvariant:"1.2.0-gpu" \
+            /opt/deepvariant/bin/run_deepvariant --model_type=WGS \
+            --ref={config[refs][Reference]} \
+            --reads={input} \
+            --output_vcf={output.vcf} \
+            --output_gvcf={output.gvcf} \
+            --num_shards=128
+            """
+        )
