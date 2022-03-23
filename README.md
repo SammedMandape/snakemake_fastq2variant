@@ -23,5 +23,8 @@ low-throughput DNA input data. DeepVariant workflow uses gpu, it is recommended 
 to avoid errors (see '[Running on a machine with GPU](https://github.com/google/deepvariant/blob/r0.9/docs/deepvariant-case-study.md)')
 for details. 
 
+<!-- Quick start -->
+## Quick start 
 
-
+<!-- Funding -->
+## Funding
