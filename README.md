@@ -47,11 +47,11 @@ snakemake -s snakemake_picard_deepvariant.smk --config Reads="example/Sample1*R1
 snakemake -nps snakemake_picard_bcftools.smk --config Reads="example/Sample1*R1*.fastq.gz" -c128
 ```
 
-<!-- Paper and Citation -->
+<!--Paper and Citation-->
 ## Paper and Citation
 In progress.
 
-<!-- Funding -->
+<!--Funding-->
 ## Funding
 This work was supported in part by award 2019-DU-BX-0046, awarded by the National Institute of Justice, Office of
 Justice Programs, U.S. Department of Justice and by internal funds from the Center for Human
