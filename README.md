@@ -50,3 +50,7 @@ snakemake -nps snakemake_picard_bcftools.smk --config Reads="example/Sample1*R1*
 
 <!-- Funding -->
 ## Funding
+This work was supported in part by award 2019-DU-BX-0046, awarded by the National Institute of Justice, Office of
+Justice Programs, U.S. Department of Justice and by internal funds from the Center for Human
+Identification. The opinions, findings, and conclusions or recommendations expressed in this publication are those of 
+the authors and do not necessarily reflect those of the U.S. Department of Justice.
