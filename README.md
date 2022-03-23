@@ -21,7 +21,7 @@ workflow doesn't include BQSR as it decreases the accuracy of variant calling. T
 files. Make sure you have enough storage space to run these scripts. These workflows are also suited for 
 low-throughput DNA input data. DeepVariant workflow uses gpu, it is recommended to make sure gpu drivers are installed 
 to avoid errors (see '[Running on a machine with GPU](https://github.com/google/deepvariant/blob/r0.9/docs/deepvariant-case-study.md)')
-for details. 
+for details. For quick snakemake example see [this](https://snakemake.readthedocs.io/en/stable/tutorial/basics.html).
 
 <!-- Quick start -->
 ## Quick start
@@ -34,17 +34,17 @@ read 2. The sample name should not have any underscore in it, dashes and dots sh
 
 * Bcftools snakemake: 
 ```bash
-snakemake -s snakemake_picard_bcftools.smk --config Reads="test_snakemake_examples/Sample1*R1*.fastq.gz" -c128
+snakemake -s snakemake_picard_bcftools.smk --config Reads="example/Sample1*R1*.fastq.gz" -c128
 ```
 
 * Bcftools deepvariant:
 ```bash
-snakemake -s snakemake_picard_deepvariant.smk --config Reads="test_snakemake_examples/Sample1*R1*.fastq.gz" -c128
+snakemake -s snakemake_picard_deepvariant.smk --config Reads="example/Sample1*R1*.fastq.gz" -c128
 ```
 
 * To just see the steps that will be run, it is recommended to do a dry run. For example,
 ```shell
-snakemake -nps snakemake_picard_bcftools.smk --config Reads="test_snakemake_examples/Sample1*R1*.fastq.gz" -c128
+snakemake -nps snakemake_picard_bcftools.smk --config Reads="example/Sample1*R1*.fastq.gz" -c128
 ```
 
 
