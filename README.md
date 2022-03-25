@@ -5,6 +5,7 @@
 ## Table of contents
 * [Introduction](#introduction)
 * [Quick start](#quick-start)
+* [Debugging](#debugging)
 * [Paper and Citation](#paper-and-citation)
 * [Funding](#funding)
 
@@ -25,12 +26,21 @@ for details. For quick snakemake example see [this](https://snakemake.readthedoc
 
 <!-- Quick start -->
 ## Quick start
-* This assumes snakemake, bwa-mem, bcftools, deepvariant, and gatk tools are installed. 
+* This assumes latest version of snakemake, bwa-mem, bcftools, deepvariant, and gatk tools are installed. 
 
 * Provide the directory where the reads are located. Provide only the read 1 fastq file as input. 
 If you have multiple samples, provide a sample specific regex pattern for read 1. Illumina, by default, uses underscores in
 their naming convention. The snakemake scripts work on these underscores to extract sample name and get its corresponding 
 read 2. The sample name should not have any underscore in it, dashes and dots should work fine.
+
+* Change config file to include the correct paths to grch38, dbsnp_138.hg38.vcf.gz, Mills_and_1000G_gold_standard.indels.hg38.vcf.gz, 
+and 1000G_phase1.snps.high_confidence.hg38.vcf.gz and their indices.
+
+* In snakemake, point to the correct picard.jar.
+
+* Make sure gatk is added to the environment variable.
+
+* Make sure correct path to tmpdir is mentioned in snakemake, markdup_bams. 
 
 * Bcftools snakemake: 
 ```bash
@@ -46,6 +56,11 @@ snakemake -s snakemake_picard_deepvariant.smk --config Reads="example/Sample1*R1
 ```shell
 snakemake -nps snakemake_picard_bcftools.smk --config Reads="example/Sample1*R1*.fastq.gz" -c128
 ```
+
+<!--Debugging-->
+## Debugging
+If you get errors or snakemake stops after any particular step, try running the same command by copying and
+pasting it. Sometimes, just running the command by itself gives you more details about the error. 
 
 <!--Paper and Citation-->
 ## Paper and Citation

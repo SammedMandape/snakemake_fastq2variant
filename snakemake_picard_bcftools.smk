@@ -51,7 +51,7 @@ rule bwa_mem_map:
 		shell(
 			"""
 			header=$(zcat {input} | head -1)
-			seqID=$(echo $header | cut -d':' -f 1 | cut -c 2-)
+			seqID=$(echo $header | cut -d':' -f 1 | cut -d' ' -f 1 | cut -c 2-)
 			id=$(echo $header | cut -d':' -f 2-4,10 --output-delimiter='_')
 			sm=$(echo {wildcards.samplename} | cut -d'_' -f 1)
 			pu=$(echo $header | cut -d':' -f 3,4 --output-delimiter='_')
@@ -100,7 +100,7 @@ rule markdup_bams:
 	shell:
 		"java -Xmx225G -jar  /usr/local/src/picard.jar  MarkDuplicates COMPRESSION_LEVEL=9 CREATE_INDEX=true "
 		 "VERBOSITY=ERROR QUIET=true I={input} O={output.bam} M={output.metrics} "
-		"TMP_DIR=/mnt/scratch0/snm0205/samtmp"
+		"TMP_DIR=/mnt/scratch0/samtmp"
 
 rule bqsr_baserecalib:
 	input:
