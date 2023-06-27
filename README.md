@@ -64,7 +64,8 @@ pasting it. Sometimes, just running the command by itself gives you more details
 
 <!--Paper and Citation-->
 ## Paper and Citation
-In progress.
+Woerner AE, Mandape S, Kapema KB, Duque TM, Smuts A, King JL, Crysup B, Wang X, Huang M, Ge J, Budowle B. Optimized Variant Calling 
+for Estimating Kinship. Forensic Science International: Genetics (2022); 61(102785)
 
 <!--Funding-->
 ## Funding
